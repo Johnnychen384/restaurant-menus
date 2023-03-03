@@ -78,6 +78,41 @@ describe('Restaurant and Menu Models', () => {
             vegetarian: true
           })
 
+          const testItem1 = await Item.create({
+            name: 'bhindi masalaasfasfasf',
+            image: 'someimage.jpg',
+            price: 9.50,
+            vegetarian: false
+          })
+
+        //   Test to check if an instance of Item is created.
+        expect(testItem.name).toBe('bhindi masala')
+
+        await testMenu.addItem(testItem)
+        await testMenu.addItem(testItem1)
+        
+        let foundMenu = await testMenu.getItems()
+
+        expect(foundMenu.length).toBe(2)
+
+        
+
+    })  
+
+
+
+
+    test("Test mulitple menus and multiple using eager loading", async () => {
+        const testMenu = await Menu.create({
+            title: 'Breakfast'
+          })
+        const testItem = await Item.create({
+            name: 'bhindi masala',
+            image: 'someimage.jpg',
+            price: 9.50,
+            vegetarian: true
+          })
+
         //   Test to check if an instance of Item is created.
         expect(testItem.name).toBe('bhindi masala')
 
