@@ -1,8 +1,10 @@
 const {sequelize} = require('./db')
-const {Restaurant, Menu} = require('./models/index')
+const {Restaurant, Menu} = require('./models/index');
+const Item = require('./models/Item');
 const {
     seedRestaurant,
     seedMenu,
+    seedItem
   } = require('./seedData');
 
 describe('Restaurant and Menu Models', () => {
@@ -64,4 +66,31 @@ describe('Restaurant and Menu Models', () => {
         
         expect(findMenu.length).toBe(2)
     })
+
+    test("Test mulitple menus and multiple", async () => {
+        const testMenu = await Menu.create({
+            title: 'Breakfast'
+          })
+        const testItem = await Item.create({
+            name: 'bhindi masala',
+            image: 'someimage.jpg',
+            price: 9.50,
+            vegetarian: true
+          })
+
+        //   Test to check if an instance of Item is created.
+        expect(testItem.name).toBe('bhindi masala')
+
+        await testMenu.addItem(testItem)
+        
+
+        const someMenu = await Menu.findAll({
+            include: [
+                {model: Item}
+            ]
+        })
+
+        expect(someMenu[0].dataValues.Items.length).toBe(1)
+
+    })  
 })
