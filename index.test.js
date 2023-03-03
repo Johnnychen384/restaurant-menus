@@ -67,6 +67,23 @@ describe('Restaurant and Menu Models', () => {
         expect(findMenu.length).toBe(2)
     })
 
+
+
+    test("Test creating Item", async () => {
+        const testItem = await Item.create({
+            name: 'bhindi masala',
+            image: 'someimage.jpg',
+            price: 9.50,
+            vegetarian: true
+          })
+
+          expect(testItem.name).toBe('bhindi masala')
+    })
+
+
+
+
+
     test("Test mulitple menus and multiple", async () => {
         const testMenu = await Menu.create({
             title: 'Breakfast'
