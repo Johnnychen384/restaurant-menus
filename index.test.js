@@ -9,7 +9,7 @@ describe('Restaurant and Menu Models', () => {
     /**
      * Runs the code prior to all tests
      */
-    beforeAll(async () => {
+    beforeEach(async () => {
         // the 'sync' method will create tables based on the model class
         // by setting 'force:true' the tables are recreated each time the 
         // test suite is run
@@ -52,4 +52,16 @@ describe('Restaurant and Menu Models', () => {
         const findRest = await Restaurant.findByPk(1)
         expect(findRest).toBeNull()
     });
+
+
+    test("Restaurant can have mutiple menus", async () => {
+        const testRest = await Restaurant.bulkCreate(seedRestaurant)
+        const testMenu = await Menu.bulkCreate(seedMenu)
+
+        await testRest[0].addMenus(testMenu[0])
+        await testRest[0].addMenus(testMenu[1])
+        const findMenu = await testRest[0].getMenus()
+        
+        expect(findMenu.length).toBe(2)
+    })
 })
